@@ -1,7 +1,8 @@
 module SpatialAdapter
   class Railtie < Rails::Railtie
     initializer "spatial_adapter.load_current_database_adapter" do
-      adapter = ActiveRecord::Base.configurations[Rails.env]['adapter']
+      # fix per http://mriddle.com/2012/11/22/Retrieving-DB-connection-from-Rails-App-on-Heroku.html
+      adapter = Rails.configuration.database_configuration[Rails.env]['adapter']
       begin
         require "spatial_adapter/#{adapter}"
       rescue LoadError
